@@ -1,0 +1,135 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.header h1 {
+  margin: 0 0 6px;
+  font-size: 28px;
+}
+
+.sub {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.panel h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  text-align: left;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.btn {
+  margin-top: 4px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.error {
+  color: #ffb4b4;
+  font-size: 13px;
+}
+
+.muted {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.preview {
+  margin-top: 16px;
+  text-align: left;
+}
+
+.preview h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.images {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.imgCard {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.imgName {
+  font-size: 12px;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.meta {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.footer {
+  margin-top: 18px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
