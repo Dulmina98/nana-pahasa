@@ -133,16 +133,42 @@ function App() {
               </div>
 
               <div className="images">
-                {result.images?.map((img) => (
-                  <div className="imgCard" key={img.filename}>
-                    <div className="imgName">{img.filename}</div>
-                    <img
-                      className="image"
-                      src={`data:image/png;base64,${img.png_base64}`}
-                      alt={img.filename}
-                    />
-                  </div>
-                ))}
+                {result.images?.map((img) => {
+                  const hasPred = img.predicted_char != null && img.confidence != null
+                  const conf = img.confidence || 0
+
+                  let confColor = '#ef4444' // red
+                  if (conf >= 80) confColor = '#22c55e' // green
+                  else if (conf >= 50) confColor = '#eab308' // yellow
+
+                  return (
+                    <div className="imgCard" key={img.filename}>
+                      <div className="imgName">{img.filename}</div>
+                      <img
+                        className="image"
+                        src={`data:image/png;base64,${img.png_base64}`}
+                        alt={img.filename}
+                      />
+                      {hasPred && (
+                        <div className="predSection">
+                          <div className="predLabel">{img.predicted_char}</div>
+                          <div className="confWrapper">
+                            <div className="confBar">
+                              <div
+                                className="confFill"
+                                style={{
+                                  width: `${conf}%`,
+                                  backgroundColor: confColor
+                                }}
+                              />
+                            </div>
+                            <div className="confText">{conf.toFixed(1)}%</div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
             </>
           )}

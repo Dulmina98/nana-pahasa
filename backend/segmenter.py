@@ -9,12 +9,15 @@ import numpy as np
 from scipy.signal import savgol_filter
 
 from pre_processing import img_processing
+from backend.classifier import predict_character
 
 
 @dataclass(frozen=True)
 class SegmentedImage:
     filename: str
     png_base64: str
+    predicted_char: str | None = None
+    confidence: float | None = None
 
 
 def _vertical_projection(binary_img: np.ndarray) -> np.ndarray:
@@ -93,7 +96,7 @@ def _find_split_points(
 
 def _split_by_vertical_projection(
     binary_img: np.ndarray, num_letters: int
-) -> tuple[list[np.ndarray], np.ndarray, list[int]]:
+) -> tuple[list[np.ndarray], np.ndarray, list[int], list[int]]:
     proj = _vertical_projection(binary_img)
     proj_smooth = _smooth_projection(proj)
     splits = _find_split_points(proj_smooth, num_letters)
@@ -106,7 +109,7 @@ def _split_by_vertical_projection(
         part = binary_img[:, xs[i] : xs[i + 1]]
         letters.append(part)
 
-    return letters, proj_smooth, splits
+    return letters, proj_smooth, splits, xs
 
 
 def _tight_crop(img: np.ndarray) -> np.ndarray:
@@ -138,15 +141,47 @@ def segment_uploaded_image(
         raise ValueError("Could not decode image (is it a valid PNG/JPG?)")
 
     binary = img_processing(img)
-    letters, _proj, splits = _split_by_vertical_projection(binary, num_letters)
+    letters, _proj, splits, xs = _split_by_vertical_projection(binary, num_letters)
 
     out: list[SegmentedImage] = []
     for i, letter in enumerate(letters, start=1):
-        letter_img = _tight_crop(letter) if crop else letter
+        letter_mask = _tight_crop(letter) if crop else letter
+        
+        # We need the original BGR pixels for this character, not a binary mask.
+        # Since letter is a boolean slice from binary, we find its bounding box in original img.
+        # Let's extract the bounding box from the original continuous image
+        h, w = letter_mask.shape[:2]
+        
+        # We need the corresponding RGB crop. Let's trace it back.
+        # letter = binary_img[:, xs[i-1] : xs[i]]
+        # letter_mask tight crops this.
+        # Instead, we just take the corresponding slice from the original BGR image `img`
+        x_start = xs[i-1]
+        x_end = xs[i]
+        
+        if crop:
+            # find tight y boundaries on the binary letter column
+            ys, xs_crop = np.where(letter > 0)
+            if len(xs_crop) > 0:
+                 y_min, y_max = ys.min(), ys.max()
+                 x_crop_min, x_crop_max = xs_crop.min(), xs_crop.max()
+                 
+                 # use these bounds to slice the original BGR image
+                 bgr_crop = img[y_min : y_max+1, x_start + x_crop_min : x_start + x_crop_max + 1]
+            else:
+                 bgr_crop = img[:, x_start:x_end]
+        else:
+            bgr_crop = img[:, x_start:x_end]
+            
+        # Predict using the BGR crop
+        predicted_char, confidence = predict_character(bgr_crop)
+
         out.append(
             SegmentedImage(
                 filename=f"char_{i}.png",
-                png_base64=_encode_png_base64(letter_img),
+                png_base64=_encode_png_base64(letter_mask),
+                predicted_char=predicted_char,
+                confidence=confidence,
             )
         )
 
