@@ -170,7 +170,7 @@ export default function App() {
   return (
     <div className="page">
       <header className="header">
-        <h1>නාන පියස <span className="headerSub">Sinhala Writing Tool</span></h1>
+        <h1>Nana Piyasa <span className="headerSub">Sinhala Writing Tool</span></h1>
         <p className="sub">Upload a handwritten Sinhala word image to segment characters or evaluate writing quality.</p>
       </header>
 
