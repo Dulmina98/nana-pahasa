@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 
 from backend.segmenter import segment_uploaded_image
 from backend.classifier import load_model
+from backend.evaluator import evaluate_uploaded_image
 
 
 load_model() # Load ML model on startup
@@ -48,3 +49,15 @@ async def segment(
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=400)
 
+
+@app.post("/evaluate")
+async def evaluate(
+    image: UploadFile = File(...),
+    num_letters: int = Form(...),
+) -> JSONResponse:
+    try:
+        image_bytes = await image.read()
+        result = evaluate_uploaded_image(image_bytes, num_letters=num_letters)
+        return JSONResponse(result)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=400)
