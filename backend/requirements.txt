@@ -8,3 +8,4 @@ supabase
 python-dotenv
 tensorflow-cpu
 keras
+matplotlib
