@@ -4,3 +4,5 @@ python-multipart
 numpy
 scipy
 opencv-python-headless
+supabase
+python-dotenv
