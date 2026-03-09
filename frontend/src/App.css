@@ -743,6 +743,15 @@ body {
   flex-shrink: 0;
 }
 
+.histCharImg {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
 .histCharBars {
   flex: 1;
   display: flex;

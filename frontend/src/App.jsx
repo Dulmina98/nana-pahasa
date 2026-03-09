@@ -93,7 +93,11 @@ function HistCard({ r }) {
             {chars.map((c, i) => (
               <div className="histCharBlock" key={i}>
                 <div className="histCharRow">
-                  <span className="histGlyph">{c.predicted_char ?? '?'}</span>
+                  {c.png_base64 ? (
+                    <img className="histCharImg" src={`data:image/png;base64,${c.png_base64}`} alt={c.filename || "character"} />
+                  ) : (
+                    <span className="histGlyph">{c.predicted_char ?? '?'}</span>
+                  )}
                   <div className="histCharBars">
                     <div className="charRow"><span>Line</span><Bar val={c.line_compliance} /><b style={{ color: scoreColor(c.line_compliance) }}>{fmt(c.line_compliance)}%</b></div>
                     <div className="charRow"><span>Shape</span><Bar val={c.confidence ?? 50} /><b style={{ color: scoreColor(c.confidence ?? 50) }}>{fmt(c.confidence)}%</b></div>
