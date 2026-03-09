@@ -6,3 +6,5 @@ scipy
 opencv-python-headless
 supabase
 python-dotenv
+tensorflow-cpu
+keras
