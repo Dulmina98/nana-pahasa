@@ -66,42 +66,65 @@ function CharCard({ c }) {
 
 /* ── History Card ───────────────────────────────────────────────── */
 function HistCard({ r }) {
-  const [open, setOpen] = useState(false)
   const date = new Date(r.created_at).toLocaleString('en-GB', {
     day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
   })
   const chars = Array.isArray(r.characters) ? r.characters : []
   return (
     <div className="histCard">
-      <div className="histTop">
+      {/* LEFT — overall info */}
+      <div className="histLeft">
         {r.image_url && <img className="histThumb" src={r.image_url} alt="word" />}
+        <ScoreRing score={r.overall_score} size={72} />
         <div className="histMeta">
-          <div className="histDate">{date}</div>
-          <div className="histLetters">{r.num_letters} letter{r.num_letters !== 1 ? 's' : ''}</div>
-          <div style={{ color: scoreColor(r.overall_score), fontWeight: 700, fontSize: '0.95rem' }}>
+          <div style={{ color: scoreColor(r.overall_score), fontWeight: 700, fontSize: '1rem' }}>
             {scoreEmoji(r.overall_score)} {scoreLabel(r.overall_score)}
           </div>
+          <div className="histScore">Score: {r.overall_score.toFixed(0)} / 100</div>
+          <div className="histDate">{date}</div>
+          <div className="histLetters">{r.num_letters} letter{r.num_letters !== 1 ? 's' : ''}</div>
         </div>
-        <ScoreRing score={r.overall_score} size={60} />
       </div>
-      <button className="expandBtn" onClick={() => setOpen(o => !o)}>
-        {open ? '▲ Hide details' : '▼ Character details'}
-      </button>
-      {open && (
-        <div className="histChars">
-          {chars.map((c, i) => (
-            <div className="histCharRow" key={i}>
-              <span className="histGlyph">{c.predicted_char ?? '?'}</span>
-              <div className="histCharBars">
-                <div className="charRow"><span>Line</span><Bar val={c.line_compliance} /><b style={{ color: scoreColor(c.line_compliance) }}>{fmt(c.line_compliance)}%</b></div>
-                <div className="charRow"><span>Shape</span><Bar val={c.confidence ?? 50} /><b style={{ color: scoreColor(c.confidence ?? 50) }}>{fmt(c.confidence)}%</b></div>
-                <div className="charRow"><span>Size</span><Bar val={c.proportion_score} /><b style={{ color: scoreColor(c.proportion_score) }}>{fmt(c.proportion_score)}%</b></div>
+      {/* RIGHT — character details */}
+      {chars.length > 0 && (
+        <div className="histRight">
+          <div className="histCharsLabel">Character breakdown</div>
+          <div className="histChars">
+            {chars.map((c, i) => (
+              <div className="histCharBlock" key={i}>
+                <div className="histCharRow">
+                  <span className="histGlyph">{c.predicted_char ?? '?'}</span>
+                  <div className="histCharBars">
+                    <div className="charRow"><span>Line</span><Bar val={c.line_compliance} /><b style={{ color: scoreColor(c.line_compliance) }}>{fmt(c.line_compliance)}%</b></div>
+                    <div className="charRow"><span>Shape</span><Bar val={c.confidence ?? 50} /><b style={{ color: scoreColor(c.confidence ?? 50) }}>{fmt(c.confidence)}%</b></div>
+                    <div className="charRow"><span>Size</span><Bar val={c.proportion_score} /><b style={{ color: scoreColor(c.proportion_score) }}>{fmt(c.proportion_score)}%</b></div>
+                  </div>
+                  <div className="histCharScore" style={{ color: scoreColor(c.quality_score) }}>{fmt(c.quality_score)}</div>
+                </div>
+                {c.feedback && c.feedback.length > 0 && (
+                  <ul className="charFeedback" style={{ paddingLeft: '0.9rem', paddingRight: '0.9rem', marginBottom: '0.3rem' }}>
+                    {c.feedback.map((f, fi) => <li key={fi}>{f}</li>)}
+                  </ul>
+                )}
               </div>
-              <div className="histCharScore" style={{ color: scoreColor(c.quality_score) }}>{fmt(c.quality_score)}</div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
+    </div>
+  )
+}
+
+/* ── Pagination ─────────────────────────────────────────────────── */
+const ITEMS_PER_PAGE = 5
+function Pagination({ total, page, setPage }) {
+  const totalPages = Math.ceil(total / ITEMS_PER_PAGE)
+  if (totalPages <= 1) return null
+  return (
+    <div className="pagination">
+      <button className="pageBtn" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}>‹ Prev</button>
+      <div className="pageInfo">Page {page} of {totalPages}</div>
+      <button className="pageBtn" onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}>Next ›</button>
     </div>
   )
 }
@@ -116,6 +139,7 @@ export default function App() {
   const [result, setResult] = useState(null)
   const [history, setHistory] = useState([])
   const [histBusy, setHistBusy] = useState(true)
+  const [histPage, setHistPage] = useState(1)
 
   useEffect(() => {
     if (!file) { setPreview(null); return }
@@ -295,8 +319,11 @@ export default function App() {
                 <div className="stat"><div className="statNum" style={{ color: '#22c55e' }}>{history.filter(r => r.overall_score >= 80).length}</div><div className="statLabel">Excellent results</div></div>
               </div>
               <div className="histList">
-                {history.map(r => <HistCard key={r.id} r={r} />)}
+                {history
+                  .slice((histPage - 1) * ITEMS_PER_PAGE, histPage * ITEMS_PER_PAGE)
+                  .map(r => <HistCard key={r.id} r={r} />)}
               </div>
+              <Pagination total={history.length} page={histPage} setPage={setHistPage} />
             </>
           )}
         </section>
