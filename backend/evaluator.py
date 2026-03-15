@@ -12,14 +12,18 @@ from __future__ import annotations
 
 import glob
 import os
+import sys
 from typing import Any
+
 
 import cv2
 import numpy as np
 
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
 from pre_processing import img_processing
-from backend.classifier import predict_character
-from backend.segmenter import _split_by_vertical_projection, _tight_crop
+from classifier import predict_character
+from segmenter import _split_by_vertical_projection, _tight_crop
 
 
 # ---------------------------------------------------------------------------
@@ -220,7 +224,7 @@ def evaluate_uploaded_image(
         x_end = xs[i]
 
         # Tight-crop binary for display
-        from backend.segmenter import _tight_crop, _encode_png_base64
+        from segmenter import _tight_crop, _encode_png_base64
         letter_display = _tight_crop(letter)
 
         # BGR crop for classifier

@@ -9,9 +9,9 @@ from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from backend.classifier import load_model
-from backend.evaluator import evaluate_uploaded_image
-from backend.supabase_client import get_supabase
+from classifier import load_model
+from evaluator import evaluate_uploaded_image
+from supabase_client import get_supabase
 
 load_model()   # Load ConvNeXt model on startup
 
