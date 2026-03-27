@@ -262,8 +262,8 @@ export default function App() {
 
                 <button className="submitBtn" type="submit" disabled={busy}>
                   {busy
-                    ? <><span className="spinner" />Evaluating…</>
-                    : '✦ විශ්ලේෂණය කරමින්'}
+                    ? <><span className="spinner" />විශ්ලේෂණය කරමින්...</>
+                    : '✦ විශ්ලේෂණය කරන්න'}
                 </button>
                 {error && <div className="errBox">{error}</div>}
               </form>
