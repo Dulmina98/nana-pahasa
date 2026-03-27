@@ -55,7 +55,7 @@ function CharCard({ c }) {
       <div className="charRows">
         <div className="charRow"><span>Line</span><Bar val={c.line_compliance} /><b style={{ color: scoreColor(c.line_compliance) }}>{fmt(c.line_compliance)}%</b></div>
         <div className="charRow"><span>Shape</span><Bar val={c.confidence ?? 50} /><b style={{ color: scoreColor(c.confidence ?? 50) }}>{fmt(c.confidence)}%</b></div>
-        <div className="charRow"><span>Size</span><Bar val={c.proportion_score} /><b style={{ color: scoreColor(c.proportion_score) }}>{fmt(c.proportion_score)}%</b></div>
+        {/* <div className="charRow"><span>Size</span><Bar val={c.proportion_score} /><b style={{ color: scoreColor(c.proportion_score) }}>{fmt(c.proportion_score)}%</b></div> */}
       </div>
       <ul className="charFeedback">
         {c.feedback.map((f, i) => <li key={i}>{f}</li>)}
@@ -101,7 +101,7 @@ function HistCard({ r }) {
                   <div className="histCharBars">
                     <div className="charRow"><span>Line</span><Bar val={c.line_compliance} /><b style={{ color: scoreColor(c.line_compliance) }}>{fmt(c.line_compliance)}%</b></div>
                     <div className="charRow"><span>Shape</span><Bar val={c.confidence ?? 50} /><b style={{ color: scoreColor(c.confidence ?? 50) }}>{fmt(c.confidence)}%</b></div>
-                    <div className="charRow"><span>Size</span><Bar val={c.proportion_score} /><b style={{ color: scoreColor(c.proportion_score) }}>{fmt(c.proportion_score)}%</b></div>
+                    {/* <div className="charRow"><span>Size</span><Bar val={c.proportion_score} /><b style={{ color: scoreColor(c.proportion_score) }}>{fmt(c.proportion_score)}%</b></div> */}
                   </div>
                   <div className="histCharScore" style={{ color: scoreColor(c.quality_score) }}>{fmt(c.quality_score)}</div>
                 </div>
@@ -191,11 +191,12 @@ export default function App() {
         {/* ── HERO ───────────────────────────────────────────────── */}
         <header className="hero">
           <div className="heroBadge">AI-Powered · Sinhala Script · For Children</div>
-          <h1 className="heroTitle">Nana Piyasa</h1>
+          <h1 className="heroTitle">නැණ පහස</h1>
           <p className="heroSub">
-            Upload a handwritten Sinhala word image and instantly receive an AI score on
-            line compliance, character shape, and proportion — all designed to help children
-            write better.
+            අතින් ලියන ලද සිංහල වචන රූපයක් උඩුගත කර, 
+            කෘතිම බුද්ධිය ඔස්සේ ක්ෂණිකව වචනවල හැඩය සහ අනුපාතය 
+            විශ්ලේෂණය කර දරුවන්ට වඩා හොඳින් ලිවීමට උපකාර කිරීම සඳහා
+            මෙය නිර්මාණය කර ඇත.
           </p>
           <div className="heroPills">
             <span className="pill">📏 Ruled-line detection</span>
@@ -207,54 +208,54 @@ export default function App() {
 
         {/* ── HOW IT WORKS ───────────────────────────────────────── */}
         <section className="howSection">
-          <h2 className="sectionTitle">How it works</h2>
+          <h2 className="sectionTitle">භාවිතා කරන ආකාරය</h2>
           <div className="howGrid">
             <div className="howCard">
               <div className="howNum">1</div>
               <div className="howIcon">📸</div>
-              <div className="howLabel">Upload</div>
-              <p className="howDesc">Take a photo of the child's handwritten word on a double-lined notebook page and upload it.</p>
+              <div className="howLabel">උඩුගත කරන්න</div>
+              <p className="howDesc">දරුවාගේ අතින් ලියන ලද වචනයේ ඡායාරූපයක් ද්විත්ව ඉරි සහිත සටහන් පොතක පිටුවක ගෙන එය උඩුගත කරන්න.</p>
             </div>
             <div className="howCard">
               <div className="howNum">2</div>
               <div className="howIcon">✂️</div>
-              <div className="howLabel">Segment</div>
-              <p className="howDesc">The AI automatically segments the word into individual characters using vertical projection.</p>
+              <div className="howLabel">කොටස</div>
+              <p className="howDesc">කෘතිම බුද්ධිය ස්වයංක්‍රීයව සිරස් ප්‍රක්ෂේපණය භාවිතයෙන් වචන තනි අක්ෂරවලට වෙන් කරයි.</p>
             </div>
             <div className="howCard">
               <div className="howNum">3</div>
               <div className="howIcon">🧠</div>
-              <div className="howLabel">Evaluate</div>
-              <p className="howDesc">Each character is scored on line compliance, shape quality, and proportion against reference images.</p>
+              <div className="howLabel">ඇගයීම</div>
+              <p className="howDesc">සෑම චරිතයක්ම රේඛීය අනුකූලතාව, හැඩයේ ගුණාත්මකභාවය සහ යොමු රූපවලට සාපේක්ෂව සමානුපාතිකව ලකුණු කර ඇත.</p>
             </div>
             <div className="howCard">
               <div className="howNum">4</div>
               <div className="howIcon">📊</div>
-              <div className="howLabel">Review</div>
-              <p className="howDesc">Scores, feedback, and the original image are saved to the cloud so you can track progress over time.</p>
+              <div className="howLabel">සමාලෝචනය කරන්න</div>
+              <p className="howDesc">ලකුණු, ප්‍රතිපෝෂණ සහ මුල් රූපය වලාකුළට සුරකින බැවින් ඔබට කාලයත් සමඟ ප්‍රගතිය නිරීක්ෂණය කළ හැකිය.</p>
             </div>
           </div>
         </section>
 
         {/* ── EVALUATE ───────────────────────────────────────────── */}
         <section className="evalSection">
-          <h2 className="sectionTitle">Evaluate Writing</h2>
+          <h2 className="sectionTitle">විශ්ලේෂණය කරන්න</h2>
           <div className="evalGrid">
 
             {/* Form */}
             <div className="card formCard">
-              <h3 className="cardTitle">Upload Image</h3>
+              <h3 className="cardTitle">පින්තූරය උඩුගත කරන්න</h3>
               <form onSubmit={onSubmit} className="form">
                 <label className="dropZone" htmlFor="imgInput">
                   {preview
                     ? <img className="dropPreview" src={preview} alt="preview" />
-                    : <><div className="dropIcon">🖼️</div><div className="dropText">Click to choose image</div><div className="dropHint">PNG · JPG · JPEG</div></>
+                    : <><div className="dropIcon">🖼️</div><div className="dropText">රූපය තෝරා ගැනීමට මෙතැන ක්ලික් කරන්න</div><div className="dropHint">PNG · JPG · JPEG</div></>
                   }
                   <input id="imgInput" type="file" accept="image/*" onChange={e => setFile(e.target.files?.[0] || null)} style={{ display: 'none' }} />
                 </label>
 
                 <label className="field">
-                  <span className="fieldLabel">Number of letters in the word</span>
+                  <span className="fieldLabel">වචනයේ ඇති අකුරු ගණන සදහන් කරන්න</span>
                   <input type="number" min={1} max={20} value={numLetters}
                     onChange={e => setNum(e.target.value)} className="numInput" />
                 </label>
@@ -262,7 +263,7 @@ export default function App() {
                 <button className="submitBtn" type="submit" disabled={busy}>
                   {busy
                     ? <><span className="spinner" />Evaluating…</>
-                    : '✦ Evaluate Writing'}
+                    : '✦ විශ්ලේෂණය කරමින්'}
                 </button>
                 {error && <div className="errBox">{error}</div>}
               </form>
@@ -270,11 +271,11 @@ export default function App() {
 
             {/* Result */}
             <div className="card resultCard">
-              <h3 className="cardTitle">Results</h3>
+              <h3 className="cardTitle">ප්‍රතිඵලය</h3>
               {!result ? (
                 <div className="emptyState">
                   <div className="emptyIcon">📝</div>
-                  <p>Submit an image to see the evaluation results here.</p>
+                  <p>ඇගයීම් ප්‍රතිඵල මෙතැනින් බැලීමට රූපයක් ඉදිරිපත් කරන්න.</p>
                 </div>
               ) : (
                 <>
@@ -333,7 +334,7 @@ export default function App() {
         </section>
 
         <footer className="footer">
-          <span>Nana Piyasa — Sinhala Handwriting Evaluator</span>
+          <span>නැණ පහස — Sinhala Handwriting Evaluator</span>
           <span className="footerDot">·</span>
           <span>FYP Project</span>
         </footer>
